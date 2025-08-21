@@ -45,4 +45,8 @@ public enum MainMenuOptions {
     public String getDescription() {
         return description;
     }
+
+    public int getId() {
+        return this.id;
+    }
 }
