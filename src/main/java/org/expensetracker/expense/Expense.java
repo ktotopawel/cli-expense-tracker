@@ -3,10 +3,10 @@ package org.expensetracker.expense;
 import java.util.Date;
 
 public class Expense {
-    private final int id;
-    private final Date date;
+    private int id;
     private String description;
     private double amount;
+    private Date date;
 
     //    private Category category;
     public Expense(int id, String description, double amount, Date date) {
@@ -43,11 +43,7 @@ public class Expense {
         return true;
     }
 
-    public Date getDate() {
+    public  Date getDate() {
         return this.date;
-    }
-
-    public String toString() {
-        return this.id + " " + this.description + " " + this.amount + " " + this.date;
     }
 }
