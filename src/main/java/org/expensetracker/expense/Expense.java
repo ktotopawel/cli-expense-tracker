@@ -1,5 +1,6 @@
 package org.expensetracker.expense;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Expense {
@@ -48,6 +49,9 @@ public class Expense {
     }
 
     public String toString() {
-        return this.id + " " + this.description + " " + this.amount + " " + this.date;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+
+        return String.format("%d. Expense: [ Description: %s | Amount: %.2f | Date: %s ]", this.id, this.description, this.amount, sdf.format(this.date));
     }
 }
