@@ -101,7 +101,7 @@ public class Controller {
             System.out.println((i + 1) + ". " + this.spendbooks.get(i).getTitle());
         }
 
-        int choice = this.scanner.nextInt() - 1;
+        int choice = Integer.parseInt(this.scanner.nextLine()) - 1;
         if (choice < 0 || choice >= this.spendbooks.size()) {
             System.out.println("Invalid choice. Please try again.");
             choseSpendbook();
@@ -120,23 +120,30 @@ public class Controller {
             System.out.println(option.getIndex() + ". " + option.getTitle());
         }
 
-        int choice = Integer.parseInt(this.scanner.nextLine());
-        try {
-            SpendbookMenuOptions.getById(choice).execute(this, spendbook);
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid choice, please choose from the available options.");
-            openSpendbookMenu(spendbook);
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        while (true) {
+            int choice = Integer.parseInt(this.scanner.nextLine());
+            try {
+                SpendbookMenuOptions.getById(choice).execute(this, spendbook);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid choice, please choose from the available options.");
+            }
         }
     }
 
     public void addExpense(Spendbook spendbook) {
         System.out.print("Enter expense description: ");
         String description = this.scanner.nextLine();
-        System.out.print("Enter expense amount: ");
-        double amount = Double.parseDouble(this.scanner.nextLine());
-
+        double amount = 0;
+        while (true) {
+            System.out.print("Enter expense amount: ");
+            try {
+                amount = Double.parseDouble(this.scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid amount. Please enter a valid number.");
+            }
+        }
         spendbook.addExpense(description, amount);
 
         this.openSpendbookMenu(spendbook);
