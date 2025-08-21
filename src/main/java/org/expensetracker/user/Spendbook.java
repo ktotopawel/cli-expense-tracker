@@ -2,31 +2,54 @@ package org.expensetracker.user;
 
 import org.expensetracker.expense.Expense;
 
-import java.lang.constant.Constable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Scanner;
 
 public class Spendbook {
     private final ArrayList<Expense> expenses;
+    private final String description;
+    private String title;
 
-    public Spendbook() {
+    public Spendbook(String title, String description) {
+        this.title = title;
+        this.description = description;
         this.expenses = new ArrayList<>();
     }
 
-    public Expense addExpense() {
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter expense description: ");
-        String description = input.nextLine();
-        System.out.print("Enter expense amount: ");
-        double amount = input.nextDouble();
-
-        Expense expense = new Expense(this.expenses.size(), description, amount, new Date());
+    public void addExpense(String description, double amount) {
+        Expense expense = new Expense(this.expenses.size() + 1, description, amount, new Date());
         this.expenses.add(expense);
-
-        return expense;
     }
 
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public boolean setTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            System.out.println("Title cannot be empty.");
+            return false;
+        }
+        this.title = title;
+        return true;
+    }
+
+
+    public void close() {
+        //todo implement close functionality
+    }
+
+    public Expense[] getExpenses() {
+        Expense[] expenses = new Expense[this.expenses.size()];
+        for (int i = 0; i < this.expenses.size(); i++) {
+            expenses[i] = this.expenses.get(i);
+        }
+
+        return expenses;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
 }

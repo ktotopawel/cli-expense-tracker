@@ -3,10 +3,10 @@ package org.expensetracker.expense;
 import java.util.Date;
 
 public class Expense {
-    private int id;
+    private final int id;
+    private final Date date;
     private String description;
     private double amount;
-    private Date date;
 
     //    private Category category;
     public Expense(int id, String description, double amount, Date date) {
@@ -15,5 +15,39 @@ public class Expense {
         this.description = description;
         this.date = date;
 //        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean setDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            System.out.println("Description cannot be empty.");
+            return false;
+        }
+        this.description = description;
+        return true;
+    }
+
+    public double getAmount() {
+        return this.amount;
+    }
+
+    public boolean setAmount(double newAmount) {
+        if (newAmount < 0) {
+            System.out.println("Amount cannot be negative.");
+            return false;
+        }
+        this.amount = newAmount;
+        return true;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public String toString() {
+        return this.id + " " + this.description + " " + this.amount + " " + this.date;
     }
 }
