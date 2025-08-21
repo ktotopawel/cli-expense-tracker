@@ -14,5 +14,6 @@ public class Main {
         String spendbooksDir = args[0];
 
         Controller controller = new Controller(spendbooksDir);
+        controller.showMenu();
     }
 }

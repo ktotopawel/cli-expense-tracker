@@ -9,9 +9,13 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Spendbook {
+    private String title;
+    private String description;
     private final ArrayList<Expense> expenses;
 
-    public Spendbook() {
+    public Spendbook(String title, String description) {
+        this.title = title;
+        this.description = description;
         this.expenses = new ArrayList<>();
     }
 
@@ -29,4 +33,20 @@ public class Spendbook {
     }
 
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public boolean setTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            System.out.println("Title cannot be empty.");
+            return false;
+        }
+        this.title = title;
+        return true;
+    }
+
+    public void open() {
+
+    }
 }
