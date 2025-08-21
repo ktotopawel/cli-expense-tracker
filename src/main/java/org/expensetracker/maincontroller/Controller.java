@@ -120,30 +120,22 @@ public class Controller {
             System.out.println(option.getIndex() + ". " + option.getTitle());
         }
 
-        while (true) {
-            int choice = Integer.parseInt(this.scanner.nextLine());
-            try {
-                SpendbookMenuOptions.getById(choice).execute(this, spendbook);
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid choice, please choose from the available options.");
-            }
+        int choice = Integer.parseInt(this.scanner.nextLine());
+        try {
+            SpendbookMenuOptions.getById(choice).execute(this, spendbook);
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid choice, please choose from the available options.");
+            openSpendbookMenu(spendbook);
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
     }
 
     public void addExpense(Spendbook spendbook) {
         System.out.print("Enter expense description: ");
         String description = this.scanner.nextLine();
-        double amount = 0;
-        while (true) {
-            System.out.print("Enter expense amount: ");
-            try {
-                amount = Double.parseDouble(this.scanner.nextLine());
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid amount. Please enter a valid number.");
-            }
-        }
+        System.out.print("Enter expense amount: ");
+        double amount = Double.parseDouble(this.scanner.nextLine());
 
         spendbook.addExpense(description, amount);
 
@@ -154,7 +146,7 @@ public class Controller {
         Expense[] expenses = spendbook.getExpenses();
 
         for (Expense expense : expenses) {
-            System.out.println(expense);
+            System.out.println(expense.toString() + '\n');
         }
         this.openSpendbookMenu(spendbook);
     }
