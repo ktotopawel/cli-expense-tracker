@@ -1,17 +1,16 @@
 package org.expensetracker.user;
 
 import org.expensetracker.expense.Expense;
+import org.expensetracker.maincontroller.SpendbookMenuOptions;
 
-import java.lang.constant.Constable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
 public class Spendbook {
+    private final ArrayList<Expense> expenses;
     private String title;
     private String description;
-    private final ArrayList<Expense> expenses;
 
     public Spendbook(String title, String description) {
         this.title = title;
@@ -19,7 +18,7 @@ public class Spendbook {
         this.expenses = new ArrayList<>();
     }
 
-    public Expense addExpense() {
+    public void addExpense() {
         Scanner input = new Scanner(System.in);
         System.out.print("Enter expense description: ");
         String description = input.nextLine();
@@ -28,8 +27,6 @@ public class Spendbook {
 
         Expense expense = new Expense(this.expenses.size(), description, amount, new Date());
         this.expenses.add(expense);
-
-        return expense;
     }
 
 
@@ -47,6 +44,34 @@ public class Spendbook {
     }
 
     public void open() {
+        System.out.println("Opening spendbook: " + this.title);
+        System.out.println("Description: " + this.description);
+        System.out.println("Expenses:");
+        this.listExpenses();
 
+        Scanner input = new Scanner(System.in);
+        while (true) {
+            System.out.println("Choose an option:");
+            for (SpendbookMenuOptions option : SpendbookMenuOptions.values()) {
+                System.out.println(option.getIndex() + ". " + option.getTitle());
+            }
+            int choice = input.nextInt();
+            if (choice < 1 || choice > SpendbookMenuOptions.values().length) {
+                System.out.println("Invalid choice. Please try again.");
+                continue;
+            }
+            SpendbookMenuOptions.getById(choice).execute(this);
+        }
+    }
+
+    public void close() {
+        //todo implement close functionality
+    }
+
+    public void listExpenses() {
+        for (int i = 0; i < this.expenses.size(); i++) {
+            Expense expense = this.expenses.get(i);
+            System.out.println((i + 1) + ". " + expense.getDescription() + " - " + expense.getAmount() + " on " + expense.getDate());
+        }
     }
 }

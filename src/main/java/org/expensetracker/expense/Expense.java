@@ -16,4 +16,34 @@ public class Expense {
         this.date = date;
 //        this.category = category;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean setDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            System.out.println("Description cannot be empty.");
+            return false;
+        }
+        this.description = description;
+        return true;
+    }
+
+    public double getAmount() {
+        return this.amount;
+    }
+
+    public boolean setAmount(double newAmount) {
+        if (newAmount < 0) {
+            System.out.println("Amount cannot be negative.");
+            return false;
+        }
+        this.amount = newAmount;
+        return true;
+    }
+
+    public  Date getDate() {
+        return this.date;
+    }
 }
