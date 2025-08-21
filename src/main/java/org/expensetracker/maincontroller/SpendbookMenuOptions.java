@@ -31,9 +31,11 @@ public enum SpendbookMenuOptions {
     }
 
     public static SpendbookMenuOptions getById(int choice) {
+
         if (choice < 1 || choice > values().length) {
             throw new IllegalArgumentException("Invalid choice. Please choose a valid option.");
         }
+
 
         return values()[choice - 1];
     }

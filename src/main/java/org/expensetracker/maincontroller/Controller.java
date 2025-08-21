@@ -77,6 +77,7 @@ public class Controller {
 
         Spendbook newSpendbook = new Spendbook(title, description);
 
+
         this.spendbooks.add(newSpendbook);
 
         System.out.println("Open new spendbook " + title + "? [Y/n]");
@@ -94,7 +95,10 @@ public class Controller {
         if (this.spendbooks.isEmpty()) {
             System.out.println("No spendbooks available. Please create a spendbook first.");
             return;
+
         }
+    }
+
 
         System.out.println("Select a spendbook to open:");
         for (int i = 0; i < this.spendbooks.size(); i++) {
@@ -108,6 +112,7 @@ public class Controller {
             choseSpendbook();
         }
 
+
         Spendbook chosenSpendbook = this.spendbooks.get(choice);
         this.openSpendbookMenu(chosenSpendbook);
     }
@@ -119,6 +124,7 @@ public class Controller {
 
         for (SpendbookMenuOptions option : SpendbookMenuOptions.values()) {
             System.out.println(option.getIndex() + ". " + option.getTitle());
+
         }
 
         while (true) {
@@ -146,6 +152,7 @@ public class Controller {
             }
         }
 
+
         spendbook.addExpense(description, amount);
 
         this.openSpendbookMenu(spendbook);
@@ -155,7 +162,9 @@ public class Controller {
         Expense[] expenses = spendbook.getExpenses();
 
         for (Expense expense : expenses) {
+
             System.out.println(expense);
+
         }
         this.openSpendbookMenu(spendbook);
     }

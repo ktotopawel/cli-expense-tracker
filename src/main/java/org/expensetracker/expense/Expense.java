@@ -49,9 +49,11 @@ public class Expense {
     }
 
     public String toString() {
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 
         return String.format("%d. Expense: [ Description: %s | Amount: %.2f | Date: %s ]", this.id, this.description, this.amount, sdf.format(this.date));
+
     }
 }
