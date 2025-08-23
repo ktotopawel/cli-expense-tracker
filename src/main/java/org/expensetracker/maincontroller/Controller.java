@@ -1,12 +1,11 @@
 package org.expensetracker.maincontroller;
 
 
-import com.google.gson.Gson;
 import org.expensetracker.expense.Expense;
 import org.expensetracker.user.Spendbook;
+import org.expensetracker.utils.IOController;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -14,41 +13,13 @@ import java.util.Scanner;
 public class Controller {
     private final ArrayList<Spendbook> spendbooks;
     private final Path spendbooksPath;
-    private final Gson gson;
     private final Scanner scanner;
 
     public Controller(String dirPath) {
-        this.spendbooksPath = Paths.get(dirPath);
-        this.spendbooks = new ArrayList<>();
-        this.gson = new Gson();
+        this.spendbooksPath = IOController.initializePath(dirPath);
+        this.spendbooks = IOController.readSpendbookFolder(this.spendbooksPath);
         this.scanner = new Scanner(System.in);
     }
-
-    /*private Spendbook[] getSpendbooks() {
-        if ( !Files.isDirectory(spendbooksPath)) {
-            System.out.println("Error: spendbooks path is not a directory.");
-            throw new IllegalArgumentException("Error: spendbooks path is not a directory.");
-        }
-
-        File spendbooksDir = spendbooksPath.toFile();
-        File[] files = spendbooksDir.listFiles((dir, name) -> name.endsWith(".spendbook"));
-
-        assert files != null;
-        return Arrays.stream(this.spendbooks).map(file -> {
-            try (FileReader reader = new FileReader(file)) {
-                assert gson != null;
-                return gson.fromJson(reader, Spendbook.class);
-            } catch (FileNotFoundException e) {
-                System.out.println("Error: spendbook file not found: " + file.getName());
-                return null;
-            } catch (Exception e) {
-                System.out.println("Error: could not read spendbook file: " + file.getName());
-                return null;
-            }
-        });
-
-        return new Spendbook[]{new Spendbook()};
-    }*/
 
     public void showMenu() {
         for (MainMenuOptions option : MainMenuOptions.values()) {
@@ -65,7 +36,7 @@ public class Controller {
             System.out.println("Invalid choice, chose from the available options: ");
             this.showMenu();
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -78,6 +49,7 @@ public class Controller {
         Spendbook newSpendbook = new Spendbook(title, description);
 
         this.spendbooks.add(newSpendbook);
+        IOController.saveSpendbook(newSpendbook, this.spendbooksPath);
 
         System.out.println("Open new spendbook " + title + "? [Y/n]");
 
@@ -88,27 +60,6 @@ public class Controller {
         } else {
             System.out.println("Spendbook " + title + " created successfully.");
         }
-    }
-
-    public void choseSpendbook() {
-        if (this.spendbooks.isEmpty()) {
-            System.out.println("No spendbooks available. Please create a spendbook first.");
-            return;
-        }
-
-        System.out.println("Select a spendbook to open:");
-        for (int i = 0; i < this.spendbooks.size(); i++) {
-            System.out.println((i + 1) + ". " + this.spendbooks.get(i).getTitle());
-        }
-
-        int choice = Integer.parseInt(this.scanner.nextLine()) - 1;
-        if (choice < 0 || choice >= this.spendbooks.size()) {
-            System.out.println("Invalid choice. Please try again.");
-            choseSpendbook();
-        }
-
-        Spendbook chosenSpendbook = this.spendbooks.get(choice);
-        this.openSpendbookMenu(chosenSpendbook);
     }
 
     public void openSpendbookMenu(Spendbook spendbook) {
@@ -134,7 +85,7 @@ public class Controller {
     public void addExpense(Spendbook spendbook) {
         System.out.print("Enter expense description: ");
         String description = this.scanner.nextLine();
-        double amount = 0;
+        double amount;
         while (true) {
             System.out.print("Enter expense amount: ");
             try {
@@ -146,6 +97,8 @@ public class Controller {
         }
         spendbook.addExpense(description, amount);
 
+        IOController.saveSpendbook(spendbook, this.spendbooksPath);
+
         this.openSpendbookMenu(spendbook);
     }
 
@@ -156,5 +109,31 @@ public class Controller {
             System.out.println(expense.toString() + '\n');
         }
         this.openSpendbookMenu(spendbook);
+    }
+
+    public void listSpendbooks() {
+        if (this.spendbooks.isEmpty()) {
+            System.out.println("No spendbooks to choose from. Do you want to create a new one? [Y/n]");
+            String choice = this.scanner.nextLine();
+            if (choice.equalsIgnoreCase("Y") || choice.isEmpty()) {
+                this.createSpendbook();
+            } else {
+                this.showMenu();
+            }
+        }
+
+        System.out.println("Choose spendbook: \n");
+
+        for (int i = 0; i < this.spendbooks.size(); i++) {
+            System.out.println(i + 1 + ". " + this.spendbooks.get(i).getTitle());
+        }
+
+        int choice = Integer.parseInt(this.scanner.nextLine()) - 1;
+
+        this.openSpendbookMenu(this.spendbooks.get(choice));
+    }
+
+    public void closeSpendbook() {
+        this.showMenu();
     }
 }

@@ -11,14 +11,14 @@ public enum MainMenuOptions {
     GET_SPENDBOOK("Open spendbook", 2) {
         @Override
         public void execute(Controller controller) {
-
+            controller.listSpendbooks();
         }
     },
 
     EXIT("Exit", 3) {
         @Override
         public void execute(Controller controller) {
-            System.exit(0);
+            System.exit(1);
         }
     };
 
