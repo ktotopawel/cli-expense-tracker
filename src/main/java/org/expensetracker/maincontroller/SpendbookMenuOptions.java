@@ -18,7 +18,7 @@ public enum SpendbookMenuOptions {
     EXIT("Exit", 3) {
         @Override
         public void execute(Controller controller, Spendbook spendbook) {
-//            controller.closeSpendbook();
+            controller.closeSpendbook();
         }
     };
 
